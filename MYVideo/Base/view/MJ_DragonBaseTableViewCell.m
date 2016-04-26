@@ -10,6 +10,16 @@
 
 @implementation MJ_DragonBaseTableViewCell
 
+//- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
+//    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+//    if (self) {
+//        self.backgroundColor = [UIColor colorWithRed:236 / 255.0 green:173 / 255.0 blue:158 / 255.0 alpha:1];
+//    }
+//    
+//    return self;
+//}
+
+
 - (void)awakeFromNib {
     // Initialization code
 }

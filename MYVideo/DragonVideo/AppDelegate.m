@@ -11,8 +11,10 @@
 #import "MJ_DragonEyeViewController.h"
 #import "MJ_DragonFoodViewController.h"
 #import "MJ_DragonMYViewController.h"
+#import "MJ_DragonWorldViewController.h"
 
-@interface AppDelegate ()
+
+@interface AppDelegate ()<JumpDelegate>
 
 @end
 
@@ -24,6 +26,11 @@
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     [self.window makeKeyAndVisible];
     
+//    //增加标识，用于判断是否是第一次启动应用...
+//    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"everLaunched"]) {
+//        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"everLaunched"];
+//        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstLaunch"];
+//    }
     
     
     MJ_DragonEyeViewController *eyeVC = [[MJ_DragonEyeViewController alloc] init];
@@ -36,27 +43,55 @@
     foodNavi.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"日食" image:[[UIImage imageNamed:@"rishi1"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] selectedImage:[UIImage imageNamed:@"rishi2"]];
     
     
-    UITabBarController *tabBar = [[UITabBarController alloc] init];
-    
-    tabBar.viewControllers = @[eyeNavi, foodNavi];
-    
-    
-    
-    
-    self.window.rootViewController = tabBar;
+    MJ_DragonWorldViewController *worldVC = [[MJ_DragonWorldViewController alloc] init];
+    UINavigationController *worldNavi = [[UINavigationController alloc] initWithRootViewController:worldVC];
+    worldNavi.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"天下" image:[[UIImage imageNamed:@"world1"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] selectedImage:[UIImage imageNamed:@"world2"]];
     
     
     
     
+    MJ_DragonMYViewController *myVC = [[MJ_DragonMYViewController alloc] init];
+    UINavigationController *myNavi = [[UINavigationController alloc] initWithRootViewController:myVC];
+    myNavi.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"MY" image:[[UIImage imageNamed:@"my1"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] selectedImage:[UIImage imageNamed:@"my2"]];
+    
+    
+    self.tabBar = [[UITabBarController alloc] init];
+    
+    self.tabBar.viewControllers = @[eyeNavi, foodNavi, worldNavi, myNavi];
+    
+    self.tabBar.tabBar.barTintColor = [UIColor colorWithRed:236 / 255.0 green:173 / 255.0 blue:158 / 255.0 alpha:1];
+    self.tabBar.tabBar.tintColor = [UIColor colorWithRed:0 green:0.7 blue:0.8 alpha:1];
+    
+    
+   
     
     
     
     
+    [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:236 / 255.0 green:173 / 255.0 blue:158 / 255.0 alpha:1]];
     
     
+    if(![[NSUserDefaults standardUserDefaults] boolForKey:@"firstLaunch"]) {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstLaunch"];
+        self.guideVC = [[MJ_DragonGuideViewController alloc] init];
+        //   如果是第一次启动的话,使用UserGuideViewController (用户引导页面) 作为根视图
+        self.guideVC.delegate = self;
+        
+        self.window.rootViewController = self.guideVC;
+    } else {
+        self.window.rootViewController = self.tabBar;
+    }
     
+   
     // Override point for customization after application launch.
     return YES;
+}
+
+
+- (void)jump {
+    
+    [self.guideVC presentViewController:self.tabBar animated:YES completion:nil];
+    
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

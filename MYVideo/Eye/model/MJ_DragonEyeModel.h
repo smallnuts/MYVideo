@@ -10,4 +10,10 @@
 
 @interface MJ_DragonEyeModel : MJ_DragonBaseModel
 
+@property (nonatomic, strong) NSNumber *syeId;
+@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSString *bgPicture;
+
+- (instancetype)initWithDataSource:(NSDictionary *)dataSource;
+
 @end
